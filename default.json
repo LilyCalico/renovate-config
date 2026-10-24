@@ -7,7 +7,7 @@
     ":prHourlyLimitNone"
   ],
   "labels": ["dependencies"],
-  "timezone": "Asia/Tokyo",
+  "timezone": "Europe/Stockholm",
   "schedule": ["* 9-17 * * 1-5"],
   "minimumReleaseAge": "7 days",
   "vulnerabilityAlerts": {

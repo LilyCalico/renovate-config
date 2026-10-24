@@ -20,7 +20,7 @@ Dependencies are managed with a hybrid of Renovate and Dependabot Alerts.
 
 | Setting           | Value                                                                      |
 | ----------------- | -------------------------------------------------------------------------- |
-| Schedule          | Weekdays, 9:00–18:00 (JST)                                                 |
+| Schedule          | Weekdays, 9:00–18:00 (Europe/Stockholm)                                    |
 | minimumReleaseAge | Only versions released at least 7 days ago                                 |
 | Grouping          | All patch updates in a single PR                                           |
 | Automerge         | Patch updates, minor / patch of `@types/*`, minor / patch of linters and formatters |
