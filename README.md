@@ -1,52 +1,52 @@
 # renovate-config
 
-LilyCalico のリポジトリで共通利用する Renovate の Shareable Config Preset です。
+Shareable Renovate config presets used across LilyCalico's repositories.
 
-運用方針は Renovate + Dependabot Alerts のハイブリッドです。
+Dependencies are managed with a hybrid of Renovate and Dependabot Alerts.
 
-| ツール            | 役割                                                                    |
-| ----------------- | ----------------------------------------------------------------------- |
-| Renovate          | パッケージ更新の検知・PR 作成、スケジュール管理、グルーピング、automerge |
-| Dependabot Alerts | 脆弱性の検知・可視化（Version Updates / Security Updates は無効）       |
+| Tool              | Role                                                                       |
+| ----------------- | -------------------------------------------------------------------------- |
+| Renovate          | Detects updates, opens PRs, handles scheduling, grouping and automerge     |
+| Dependabot Alerts | Detects and surfaces vulnerabilities (Version / Security Updates disabled) |
 
-## Preset 一覧
+## Presets
 
-| Preset         | 用途                         | 参照方法                                   |
-| -------------- | ---------------------------- | ------------------------------------------ |
-| `default.json` | 全リポジトリ共通の基本設定   | `local>LilyCalico/renovate-config:default` |
-| `nextjs.json`  | Next.js / React プロジェクト | `local>LilyCalico/renovate-config:nextjs`  |
+| Preset         | Purpose                                | How to reference                           |
+| -------------- | -------------------------------------- | ------------------------------------------ |
+| `default.json` | Base settings shared by every repo     | `local>LilyCalico/renovate-config:default` |
+| `nextjs.json`  | Next.js / React projects               | `local>LilyCalico/renovate-config:nextjs`  |
 
-### default.json の内容
+### default.json
 
-| 設定              | 内容                                                              |
-| ----------------- | ----------------------------------------------------------------- |
-| スケジュール      | 平日 9〜18 時 (JST) に更新 PR を作成                              |
-| minimumReleaseAge | リリースから 7 日経過したバージョンのみ対象                       |
-| グルーピング      | patch アップデートは 1 つの PR にまとめる                         |
-| automerge         | patch、`@types/*` の minor / patch、Linter / Formatter の minor / patch |
-| 同時 PR 数        | 最大 10                                                           |
-| セキュリティ      | 脆弱性対応 PR はスケジュールを無視して即時作成し、`security` ラベルを付与 |
+| Setting           | Value                                                                      |
+| ----------------- | -------------------------------------------------------------------------- |
+| Schedule          | Weekdays, 9:00–18:00 (JST)                                                 |
+| minimumReleaseAge | Only versions released at least 7 days ago                                 |
+| Grouping          | All patch updates in a single PR                                           |
+| Automerge         | Patch updates, minor / patch of `@types/*`, minor / patch of linters and formatters |
+| Concurrent PRs    | Up to 10                                                                   |
+| Security          | Vulnerability fixes are opened immediately, ignoring the schedule, with the `security` label |
 
-### nextjs.json の内容
+### nextjs.json
 
-`default` を継承し、以下をそれぞれ 1 つの PR にまとめます。
+Extends `default` and groups each of the following into a single PR:
 
-- Next.js（`next`, `@next/*`, `eslint-config-next`）
-- React（`react`, `react-dom`, `@types/react`, `@types/react-dom`）
-- Storybook（`storybook`, `@storybook/*`）
-- TanStack（`@tanstack/*`）
+- Next.js (`next`, `@next/*`, `eslint-config-next`)
+- React (`react`, `react-dom`, `@types/react`, `@types/react-dom`)
+- Storybook (`storybook`, `@storybook/*`)
+- TanStack (`@tanstack/*`)
 
-## 導入手順
+## Setup
 
 > [!IMPORTANT]
-> 必ず **手順 2 の `renovate.json` を default ブランチにマージしてから** 手順 3 で Renovate App のアクセスを許可してください。
-> `renovate-config` は Renovate の予約名で、`renovate.json` が無いリポジトリには `default.json` が暗黙適用され、automerge を含む設定がそのまま動き出します。
+> Merge the `renovate.json` from step 2 into the default branch **before** granting the Renovate app access in step 3.
+> `renovate-config` is a reserved repository name: Renovate implicitly applies `default.json` to any repository without a `renovate.json`, so automerge and everything else would start running right away.
 
-1. **Dependabot Alerts を有効化する**
-   Settings → Advanced Security で `Dependabot alerts` を Enable にする。
-   `Dependabot security updates` と `Dependabot version updates` は無効のままにする（更新 PR は Renovate が作成する）。
+1. **Enable Dependabot Alerts**
+   In Settings → Advanced Security, enable `Dependabot alerts`.
+   Leave `Dependabot security updates` and `Dependabot version updates` disabled (Renovate opens the update PRs).
 
-2. **`renovate.json` をリポジトリのルートに追加してマージする**
+2. **Add `renovate.json` to the repository root and merge it**
 
    ```json
    {
@@ -55,7 +55,7 @@ LilyCalico のリポジトリで共通利用する Renovate の Shareable Config
    }
    ```
 
-   リポジトリ固有の設定は同じファイルで上書きできます。
+   Repository-specific settings can override the preset in the same file:
 
    ```json
    {
@@ -65,22 +65,22 @@ LilyCalico のリポジトリで共通利用する Renovate の Shareable Config
    }
    ```
 
-3. **Renovate App にリポジトリへのアクセスを許可する**
-   https://github.com/apps/renovate → Configure → Only select repositories で対象リポジトリを追加する。
-   初回は Mend Developer Portal に遷移するので、**Renovate Only** → **Scan and Alert** を選ぶ。
+3. **Grant the Renovate app access to the repository**
+   Go to https://github.com/apps/renovate → Configure → Only select repositories and add the repository.
+   On first setup you are redirected to the Mend Developer Portal: choose **Renovate Only**, then **Scan and Alert**.
 
 > [!NOTE]
-> このリポジトリ（`renovate-config`）自体には Renovate App のアクセスを許可しないでください。public リポジトリなので、アクセスを許可しなくても Preset は読み込まれます。
+> Do not grant the Renovate app access to this repository (`renovate-config`). It is public, so the presets can be read without access.
 
-## automerge の前提
+## Automerge requirements
 
-automerge は PR のステータスチェックがすべて成功した場合のみ実行されます。
-ステータスチェックが 1 つも無いリポジトリでは automerge されません。
+Renovate automerges a PR only when all of its status checks pass.
+Repositories without any status checks are never automerged.
 
-GitHub の `Allow auto-merge` を有効にする場合は、ブランチ保護で必須ステータスチェックも設定してください。必須チェックが無いと、CI の完了前にマージされることがあります。
+If you enable GitHub's `Allow auto-merge`, also require status checks in branch protection. Without required checks, PRs can be merged before CI finishes.
 
-## Preset の追加・変更
+## Adding or changing presets
 
-- 新しい Preset はルートに `<name>.json` を追加し、`"extends": ["local>LilyCalico/renovate-config:default"]` で基本設定を継承する
-- 全リポジトリに影響するため、変更は PR で行い、`Validate Renovate presets` ワークフローが通ることを確認してからマージする
-- ローカルでの検証: `npx --package renovate -- renovate-config-validator --strict --no-global *.json`
+- Add a new preset as `<name>.json` at the root and inherit the base settings with `"extends": ["local>LilyCalico/renovate-config:default"]`
+- Changes affect every repository, so make them through a PR and merge only after the `Validate Renovate presets` workflow passes
+- Validate locally: `npx --package renovate -- renovate-config-validator --strict --no-global *.json`
