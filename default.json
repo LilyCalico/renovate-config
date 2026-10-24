@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "LilyCalico の全リポジトリ共通の基本 Renovate 設定",
+  "description": "Base Renovate config shared by all LilyCalico repositories",
   "extends": [
     "config:recommended",
     ":prConcurrentLimit10",
@@ -16,24 +16,24 @@
   },
   "packageRules": [
     {
-      "description": "patch アップデートを1つの PR にまとめる",
+      "description": "Group all patch updates into a single PR",
       "matchUpdateTypes": ["patch"],
       "groupName": "patch updates",
       "groupSlug": "patch"
     },
     {
-      "description": "patch は CI が通れば automerge",
+      "description": "Automerge patch updates once CI passes",
       "matchUpdateTypes": ["patch"],
       "automerge": true
     },
     {
-      "description": "型定義パッケージは minor / patch を automerge",
+      "description": "Automerge minor / patch updates of type definitions",
       "matchPackageNames": ["@types/**"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     },
     {
-      "description": "Linter / Formatter は minor / patch を automerge",
+      "description": "Automerge minor / patch updates of linters and formatters",
       "matchPackageNames": [
         "@biomejs/biome",
         "eslint",

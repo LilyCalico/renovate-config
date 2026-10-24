@@ -1,16 +1,16 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Next.js / React プロジェクト向け Preset",
+  "description": "Preset for Next.js / React projects",
   "extends": ["local>LilyCalico/renovate-config:default"],
   "packageRules": [
     {
-      "description": "Next.js 関連をまとめる",
+      "description": "Group Next.js packages",
       "matchPackageNames": ["next", "@next/**", "eslint-config-next"],
       "groupName": "Next.js",
       "groupSlug": "nextjs"
     },
     {
-      "description": "React 本体と型定義をまとめる",
+      "description": "Group React and its type definitions",
       "matchPackageNames": [
         "react",
         "react-dom",
@@ -21,13 +21,13 @@
       "groupSlug": "react"
     },
     {
-      "description": "Storybook 関連をまとめる",
+      "description": "Group Storybook packages",
       "matchPackageNames": ["storybook", "@storybook/**"],
       "groupName": "Storybook",
       "groupSlug": "storybook"
     },
     {
-      "description": "TanStack 関連をまとめる",
+      "description": "Group TanStack packages",
       "matchPackageNames": ["@tanstack/**"],
       "groupName": "TanStack",
       "groupSlug": "tanstack"
