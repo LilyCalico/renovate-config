@@ -1,0 +1,36 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Next.js / React プロジェクト向け Preset",
+  "extends": ["local>LilyCalico/renovate-config:default"],
+  "packageRules": [
+    {
+      "description": "Next.js 関連をまとめる",
+      "matchPackageNames": ["next", "@next/**", "eslint-config-next"],
+      "groupName": "Next.js",
+      "groupSlug": "nextjs"
+    },
+    {
+      "description": "React 本体と型定義をまとめる",
+      "matchPackageNames": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom"
+      ],
+      "groupName": "React",
+      "groupSlug": "react"
+    },
+    {
+      "description": "Storybook 関連をまとめる",
+      "matchPackageNames": ["storybook", "@storybook/**"],
+      "groupName": "Storybook",
+      "groupSlug": "storybook"
+    },
+    {
+      "description": "TanStack 関連をまとめる",
+      "matchPackageNames": ["@tanstack/**"],
+      "groupName": "TanStack",
+      "groupSlug": "tanstack"
+    }
+  ]
+}

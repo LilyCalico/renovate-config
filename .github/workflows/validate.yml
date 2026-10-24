@@ -1,0 +1,17 @@
+name: Validate Renovate presets
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Validate presets
+        run: npx --yes --package renovate -- renovate-config-validator --strict --no-global *.json

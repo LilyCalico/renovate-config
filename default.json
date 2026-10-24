@@ -1,0 +1,49 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "LilyCalico の全リポジトリ共通の基本 Renovate 設定",
+  "extends": [
+    "config:recommended",
+    ":prConcurrentLimit10",
+    ":prHourlyLimitNone"
+  ],
+  "labels": ["dependencies"],
+  "timezone": "Asia/Tokyo",
+  "schedule": ["* 9-17 * * 1-5"],
+  "minimumReleaseAge": "7 days",
+  "vulnerabilityAlerts": {
+    "labels": ["security"],
+    "schedule": ["at any time"]
+  },
+  "packageRules": [
+    {
+      "description": "patch アップデートを1つの PR にまとめる",
+      "matchUpdateTypes": ["patch"],
+      "groupName": "patch updates",
+      "groupSlug": "patch"
+    },
+    {
+      "description": "patch は CI が通れば automerge",
+      "matchUpdateTypes": ["patch"],
+      "automerge": true
+    },
+    {
+      "description": "型定義パッケージは minor / patch を automerge",
+      "matchPackageNames": ["@types/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "description": "Linter / Formatter は minor / patch を automerge",
+      "matchPackageNames": [
+        "@biomejs/biome",
+        "eslint",
+        "eslint-*",
+        "@eslint/**",
+        "prettier",
+        "prettier-*"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    }
+  ]
+}
